@@ -10,10 +10,8 @@ import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { buildQuery, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
+import { buildQuery, setMetadata, AtomicPhase } from "../utils"
 import EventBusService from "./event-bus"
-import { UseAtomicPhase } from "../utils/decorators/atomic-phase"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -308,7 +306,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  @UseAtomicPhase()
+  @AtomicPhase()
   async update(
     customerId: string,
     update: UpdateCustomerInput
